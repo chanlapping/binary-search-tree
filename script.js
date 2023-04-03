@@ -10,6 +10,23 @@ class Tree {
     constructor(arr) {
         this.root = buildTree(arr);
     }
+
+    insert(value) {
+        this.#insertValue(this.root, value);
+    }
+
+    #insertValue(node, value) {
+        if (node === null) {
+            const newNode = new Node(value);
+            return newNode;
+        }
+        if (value < node.data) {
+            node.left = this.#insertValue(node.left, value);
+        } else if (value > node.data) {
+            node.right = this.#insertValue(node.right, value);
+        } 
+        return node;
+    }
 }
 
 function buildTree(arr) {
@@ -20,9 +37,6 @@ function buildTree(arr) {
     const root = buildBST(newArr, 0, newArr.length - 1);
     return root;
 }
-
-
-
 
 function buildBST(arr, start, end) {
     if (start > end) {
@@ -49,5 +63,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
   }
 
   let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-  let n = buildTree(a);
-  prettyPrint(n);
+  let tree = new Tree(a);
+  prettyPrint(tree.root);
+  tree.insert(68);
+  prettyPrint(tree.root);
