@@ -9,6 +9,7 @@ class Node {
 class Tree {
     constructor(arr) {
         this.root = buildTree(arr);
+        this.values = [];
     }
 
     insert(value) {
@@ -57,6 +58,104 @@ class Tree {
         }
         return node;
     }
+
+    find(value) {
+        let node = this.root;
+        while (node && node.data != value) {
+            if (value < node.data) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+        return node;
+    }
+
+    levelOrder(func) {
+        let queue = [];
+        this.values = [];
+        queue.push(this.root);
+        while(queue.length > 0) {
+            let node = queue.shift();
+            if (func) {
+                func(node);
+            } else {
+                this.values.push(node.data);
+            }
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
+        if (!func) {
+            return this.values;
+        }
+    }
+
+    inorder(func) {
+        this.values = [];
+        this.#inorderRec(this.root, func);
+        if (this.values.length > 0) {
+            return this.values;
+        }
+    }
+
+    #inorderRec(node, func) {
+        if (!node) {
+            return;
+        }
+        this.#inorderRec(node.left, func);
+        if (func) {
+            func(node);
+        } else {
+            this.values.push(node.data);
+        }
+        this.#inorderRec(node.right, func);
+    }
+
+    preorder(func) {
+        this.values = [];
+        this.#preorderRec(this.root, func);
+        if (this.values.length > 0) {
+            return this.values;
+        }
+    }
+
+    #preorderRec(node, func) {
+        if (!node) {
+            return;
+        }
+        if (func) {
+            func(node);
+        } else {
+            this.values.push(node.data);
+        }
+        this.#preorderRec(node.left, func);
+        this.#preorderRec(node.right, func);
+    }
+
+    postorder(func) {
+        this.values = [];
+        this.#postorderRec(this.root, func);
+        if (this.values.length > 0) {
+            return this.values;
+        }
+    }
+
+    #postorderRec(node, func) {
+        if (!node) {
+            return;
+        }
+        this.#postorderRec(node.left, func);
+        this.#postorderRec(node.right, func);
+        if (func) {
+            func(node);
+        } else {
+            this.values.push(node.data);
+        }
+    }
 }
 
 function buildTree(arr) {
@@ -97,5 +196,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree(a);
 prettyPrint(tree.root);
-tree.delete(67);
-prettyPrint(tree.root);
+tree.postorder(node => console.log(node.data));
