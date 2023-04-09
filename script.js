@@ -244,10 +244,25 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 }
 
+let treeString = '';
+
+function prettyString(node, prefix = '', isLeft = true) {
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyString(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    treeString += `${prefix}${isLeft ? '└── ' : '┌── '}${node.data}\n\n`;
+    if (node.left !== null) {
+        prettyString(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
+}
+
 function getRandomValues(n) {
     const result = [];
     for (let i = 0; i < n; i++) {
-        const value = Math.floor(Math.random() * 10000);
+        const value = Math.floor(Math.random() * 1000);
         result.push(value);
     }
     return result;
@@ -256,27 +271,29 @@ function getRandomValues(n) {
 // let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const a = getRandomValues(14);
 let tree = new Tree(a);
-displayTree();
+const original = document.querySelector('#original');
+const unbalanced = document.querySelector('#unbalanced');
+const rebalanced = document.querySelector('#rebalanced');
+displayTree(original);
 
 tree.insert(101);
 tree.insert(102);
 tree.insert(103);
 tree.insert(104);
 
-displayTree();
+displayTree(unbalanced);
 
 tree.rebalance();
-displayTree();
+displayTree(rebalanced);
 
-function displayTree() {
-    prettyPrint(tree.root);
-    console.log('is balanced:', tree.isBalanced());
-    console.log('level order:');
-    console.log(tree.levelOrder());
-    console.log('pre order:');
-    console.log(tree.preorder());
-    console.log('post order');
-    console.log(tree.postorder());
-    console.log('in order');
-    console.log(tree.inorder());
+function displayTree(ele) {
+    treeString = '';
+    ele.value = '';
+    prettyString(tree.root);
+    ele.value = treeString;
+    ele.value += `balanced: ${tree.isBalanced()}\n\n`;
+    ele.value += `level: ${tree.levelOrder()}\n\n`;
+    ele.value += `pre: ${tree.preorder()}\n\n`;
+    ele.value += `post: ${tree.postorder()}\n\n`;
+    ele.value += `in: ${tree.inorder()}`;
 }
