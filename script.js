@@ -244,11 +244,39 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 }
 
+function getRandomValues(n) {
+    const result = [];
+    for (let i = 0; i < n; i++) {
+        const value = Math.floor(Math.random() * 10000);
+        result.push(value);
+    }
+    return result;
+}
 
-
-let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+// let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const a = getRandomValues(14);
 let tree = new Tree(a);
-tree.insert(2);
-prettyPrint(tree.root);
+displayTree();
+
+tree.insert(101);
+tree.insert(102);
+tree.insert(103);
+tree.insert(104);
+
+displayTree();
+
 tree.rebalance();
-prettyPrint(tree.root);
+displayTree();
+
+function displayTree() {
+    prettyPrint(tree.root);
+    console.log('is balanced:', tree.isBalanced());
+    console.log('level order:');
+    console.log(tree.levelOrder());
+    console.log('pre order:');
+    console.log(tree.preorder());
+    console.log('post order');
+    console.log(tree.postorder());
+    console.log('in order');
+    console.log(tree.inorder());
+}
