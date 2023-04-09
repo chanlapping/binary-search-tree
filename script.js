@@ -8,8 +8,28 @@ class Node {
 
 class Tree {
     constructor(arr) {
-        this.root = buildTree(arr);
+        this.root = Tree.#buildTree(arr);
         this.values = [];
+    }
+
+    static #buildTree(arr) {
+        let set = new Set(arr);
+        let newArr = Array.from(set);
+        newArr.sort((a, b) => a - b);
+
+        const root = this.#buildBST(newArr, 0, newArr.length - 1);
+        return root;
+    }
+
+    static #buildBST(arr, start, end) {
+        if (start > end) {
+            return null;
+        }
+        let mid = Math.floor((start + end) / 2);
+        let node = new Node(arr[mid]);
+        node.left = this.#buildBST(arr, start, mid - 1);
+        node.right = this.#buildBST(arr, mid + 1, end);
+        return node;
     }
 
     insert(value) {
@@ -205,29 +225,11 @@ class Tree {
 
     rebalance() {
         const values = this.levelOrder();
-        this.root = buildTree(values);
+        this.root = Tree.#buildTree(values);
     }
 }
 
-function buildTree(arr) {
-    let set = new Set(arr);
-    let newArr = Array.from(set);
-    newArr.sort((a, b) => a - b);
 
-    const root = buildBST(newArr, 0, newArr.length - 1);
-    return root;
-}
-
-function buildBST(arr, start, end) {
-    if (start > end) {
-        return null;
-    }
-    let mid = Math.floor((start + end) / 2);
-    let node = new Node(arr[mid]);
-    node.left = buildBST(arr, start, mid - 1);
-    node.right = buildBST(arr, mid + 1, end);
-    return node;
-}
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
     if (node === null) {
