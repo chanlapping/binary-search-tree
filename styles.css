@@ -1,8 +1,11 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 main {
     display: flex;
     justify-content: space-around;
     gap: 5px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 main div {
@@ -15,6 +18,7 @@ textarea {
     box-sizing: border-box;
     padding: 1rem;
     font-size: 12px;
+    font-family: 'Courier New', Courier, monospace;
     resize: none;
 }
 
