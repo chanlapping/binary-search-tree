@@ -7,9 +7,12 @@ class Node {
 }
 
 class Tree {
+
+    #values;
+
     constructor(arr) {
         this.root = Tree.#buildTree(arr);
-        this.values = [];
+        this.#values = [];
     }
 
     static #buildTree(arr) {
@@ -93,14 +96,14 @@ class Tree {
 
     levelOrder(func) {
         let queue = [];
-        this.values = [];
+        this.#values = [];
         queue.push(this.root);
         while(queue.length > 0) {
             let node = queue.shift();
             if (func) {
                 func(node);
             } else {
-                this.values.push(node.data);
+                this.#values.push(node.data);
             }
             if (node.left) {
                 queue.push(node.left);
@@ -110,15 +113,15 @@ class Tree {
             }
         }
         if (!func) {
-            return this.values;
+            return this.#values;
         }
     }
 
     inorder(func) {
-        this.values = [];
+        this.#values = [];
         this.#inorderRec(this.root, func);
-        if (this.values.length > 0) {
-            return this.values;
+        if (this.#values.length > 0) {
+            return this.#values;
         }
     }
 
@@ -130,16 +133,16 @@ class Tree {
         if (func) {
             func(node);
         } else {
-            this.values.push(node.data);
+            this.#values.push(node.data);
         }
         this.#inorderRec(node.right, func);
     }
 
     preorder(func) {
-        this.values = [];
+        this.#values = [];
         this.#preorderRec(this.root, func);
-        if (this.values.length > 0) {
-            return this.values;
+        if (this.#values.length > 0) {
+            return this.#values;
         }
     }
 
@@ -150,17 +153,17 @@ class Tree {
         if (func) {
             func(node);
         } else {
-            this.values.push(node.data);
+            this.#values.push(node.data);
         }
         this.#preorderRec(node.left, func);
         this.#preorderRec(node.right, func);
     }
 
     postorder(func) {
-        this.values = [];
+        this.#values = [];
         this.#postorderRec(this.root, func);
-        if (this.values.length > 0) {
-            return this.values;
+        if (this.#values.length > 0) {
+            return this.#values;
         }
     }
 
@@ -173,7 +176,7 @@ class Tree {
         if (func) {
             func(node);
         } else {
-            this.values.push(node.data);
+            this.#values.push(node.data);
         }
     }
 
@@ -268,7 +271,7 @@ function getRandomValues(n) {
     return result;
 }
 
-// let a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
 const a = getRandomValues(14);
 let tree = new Tree(a);
 const original = document.querySelector('#original');
